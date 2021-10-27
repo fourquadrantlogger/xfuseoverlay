@@ -6,13 +6,14 @@ import (
 	"log"
 )
 
-type XRoot struct {
-	fs.Inode
-}
-
 func main() {
+	flag.Parse()
 	opts := &fs.Options{}
-	server, err := fs.Mount(flag.Arg(0), &XRoot{}, opts)
+	opts.MountOptions.Debug = false
+
+	server, err := fs.Mount(flag.Arg(0), &XRoot{
+		Layers: []string{"/home/timeloveboy/test/layer1"},
+	}, opts)
 	if err != nil {
 		log.Fatalf("Mount fail: %v\n", err)
 	}
